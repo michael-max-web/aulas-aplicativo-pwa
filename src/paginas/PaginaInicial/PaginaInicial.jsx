@@ -2,14 +2,22 @@ import BotaoCustomizado from "../../componentes/BotaoCustomizado/BotaoCustomizad
 import Principal from "../../componentes/Principal/Principal";
 import "./PaginaInicial.css";
 
-function PaginaInicial() {
-    return (
-        <Principal>
-            <BotaoCustomizado tipo="primario">Salvar</BotaoCustomizado>
+import { useNavigate } from 'react-router-dom';
 
-            <BotaoCustomizado tipo="secundario">Cancelar</BotaoCustomizado>
-        </Principal>
-    )
+function PaginaInicial() {
+  const navigate = useNavigate();
+
+  return (
+    <Principal>
+      <BotaoCustomizado tipo="primario" aoClicar={() => navigate('/lista-produtos')}>
+        Lista de Produtos
+      </BotaoCustomizado>
+
+      <BotaoCustomizado tipo="secundario" aoClicar={() => navigate('/blablabla')}>
+        Rota Inválida
+      </BotaoCustomizado>
+    </Principal>
+  );
 }
 
 export default PaginaInicial;

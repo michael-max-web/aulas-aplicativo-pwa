@@ -1,6 +1,6 @@
 import "./BotaoCustomizado.css";
 
-function BotaoCustomizado({ tipo, children }) {
+function BotaoCustomizado({ tipo, aoClicar, children }) {
   let classes = "botao-customizado__root";
 
   switch (tipo) {
@@ -12,7 +12,9 @@ function BotaoCustomizado({ tipo, children }) {
       break;
   }
 
-  return <button className={classes}>{children}</button>;
+  return <button className={classes} onClick={aoClicar}>{
+    children}
+  </button>;
 }
 
 export default BotaoCustomizado;
