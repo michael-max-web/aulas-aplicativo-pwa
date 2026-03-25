@@ -14,10 +14,9 @@ const roteador = createBrowserRouter([
     element: <PaginaInicial />,
   },
   {
-    path: 'lista-produtos',
+    path: "lista-produtos",
     element: <ListaProdutos />,
   },
-
   {
     path: "*",
     element: <h3>Página não encontrada!!</h3>,

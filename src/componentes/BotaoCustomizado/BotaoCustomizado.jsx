@@ -12,9 +12,11 @@ function BotaoCustomizado({ tipo, aoClicar, children }) {
       break;
   }
 
-  return <button className={classes} onClick={aoClicar}>{
-    children}
-  </button>;
+  return (
+    <button className={classes} onClick={aoClicar}>
+      {children}
+    </button>
+  );
 }
 
 export default BotaoCustomizado;
