@@ -7,7 +7,7 @@ function ListaProdutos() {
     {
       nome: "Smartphone Samsung",
       preco: 2999,
-      cores: ["#29d8d5", "#252a34", "#fc3766"],
+      cores: ["#29d8d5", "#252a34", "#fc3766", "#fcbf49"],
     },
     {
       nome: "Notebook Acer",
@@ -19,18 +19,22 @@ function ListaProdutos() {
       preco: 1499,
       cores: ["#365069", "#47c1c8", "#f95786"],
     },
+    {
+      nome: "POCO Phone F5",
+      preco: 1499,
+      cores: ["#365069", "#47c1c8", "#f95786"],
+    },
   ];
 
   return (
     <Principal>
       <h2>Lista de Produtos</h2>
 
-      {produtos.map((itemProduto, index) => {
-        return <ItemProduto key={index} produto={itemProduto} />;
+      {produtos.map((itemProduto, indice) => {
+        return <ItemProduto key={indice} produto={itemProduto} />;
       })}
     </Principal>
   );
 }
-
 
 export default ListaProdutos;

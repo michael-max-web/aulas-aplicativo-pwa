@@ -17,10 +17,7 @@ function PaginaInicial() {
         Lista de Tarefas
       </BotaoCustomizado>
 
-      <BotaoCustomizado aoClicar={() => navigate("/blablabla")}>
-        Rota Inválida
-      </BotaoCustomizado>
-
+      <BotaoCustomizado aoClicar={() => navigate("/blablabla")}>Rota Inválida</BotaoCustomizado>
     </Principal>
   );
 }
