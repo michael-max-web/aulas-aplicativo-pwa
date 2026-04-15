@@ -4,8 +4,7 @@ import CampoCustomizado from "../../componentes/CampoCustomizado/CampoCustomizad
 import Principal from "../../componentes/Principal/Principal";
 import "./ListaTarefas.css";
 
-
-function ListaTarefas({ }) {
+function ListaTarefas() {
   const [novaTarefa, setNovaTarefa] = useState("");
   const [tarefas, setTarefas] = useState([]);
 
@@ -33,10 +32,6 @@ function ListaTarefas({ }) {
 
   return (
     <Principal voltarPara="/" titulo={`Lista de Tarefas (${tarefas.length})`}>
-      {/* <h2>Lista de Tarefas ({tarefas.length})</h2> */}
-
-      <div className="lista-tarefas__campo-adicionar">
-
         <CampoCustomizado
           label="Nova Tarefa"
           // proprieade não mapeadas...
@@ -55,7 +50,6 @@ function ListaTarefas({ }) {
         <BotaoCustomizado tipo="secundario" aoClicar={adicionarTarefa}>
           +
         </BotaoCustomizado> */}
-      </div>
       {!tarefas.length && (
         <span className="lista-tarefas__mensagem-sem-tarefas">Não há tarefas para mostrar.</span>
       )}
