@@ -8,32 +8,56 @@ import "./App.css";
 import Cabecalho from "./componentes/Cabecalho/Cabecalho";
 import Rodape from "./componentes/Rodape/Rodape";
 // imports de páginas
+import ValidarAutenticacao from "./componentes/ValidarAutenticacao/ValidarAutenticacao";
+import AppContextProvider from "./contexto/AppContext";
 import CadastroCliente from "./paginas/CadastroCliente/CadastroCliente";
 import ListaClientes from "./paginas/ListaClientes/ListaClientes";
 import ListaProdutos from "./paginas/ListaProdutos/ListaProdutos";
 import ListaTarefas from "./paginas/ListaTarefas/ListaTarefas";
+import Login from "./paginas/Login/Login";
+import NovoUsuario from "./paginas/NovoUsuario/NovoUsuario";
 import PaginaInicial from "./paginas/PaginaInicial/PaginaInicial";
+import PerfilUsuario from "./paginas/PerfilUsuario/PerfilUsuario";
 
 const roteador = createBrowserRouter([
   {
+    path: "login",
+    element: <Login />,
+  },
+  {
+    path: "novo-usuario",
+    element: <NovoUsuario />,
+  },
+  {
     path: "",
-    element: <PaginaInicial />,
-  },
-  {
-    path: "lista-produtos",
-    element: <ListaProdutos />,
-  },
-  {
-    path: "lista-tarefas",
-    element: <ListaTarefas />,
-  },
-  {
-    path: "lista-clientes",
-    element: <ListaClientes />,
-  },
-  {
-    path: "cadastro-cliente/:clienteId?", // o "?" torna o parâmetro opcional, ou seja, pode ser acessado tanto para criar um novo cliente (sem id) quanto para editar um cliente existente (com id)
-    element: <CadastroCliente />,
+    element: <ValidarAutenticacao />,
+    children: [
+      // Rotas privadas ao app, ou seja, só podem ser acessadas por usuários autenticados
+      {
+        path: "",
+        element: <PaginaInicial />,
+      },
+      {
+        path: "meu-perfil",
+        element: <PerfilUsuario />,
+      },
+      {
+        path: "lista-produtos",
+        element: <ListaProdutos />,
+      },
+      {
+        path: "lista-tarefas",
+        element: <ListaTarefas />,
+      },
+      {
+        path: "lista-clientes",
+        element: <ListaClientes />,
+      },
+      {
+        path: "cadastro-cliente/:clienteId?", // o "?" torna o parâmetro opcional, ou seja, pode ser acessado tanto para criar um novo cliente (sem id) quanto para editar um cliente existente (com id)
+        element: <CadastroCliente />,
+      },
+    ],
   },
   {
     path: "*", //
@@ -44,10 +68,12 @@ const roteador = createBrowserRouter([
 function App() {
   return (
     <>
-      <Cabecalho />
-      <RouterProvider router={roteador} />
-      <Rodape />
-      <ToastContainer />
+      <AppContextProvider>
+        <Cabecalho />
+        <RouterProvider router={roteador} />
+        <Rodape />
+        <ToastContainer />
+      </AppContextProvider>
     </>
   );
 }

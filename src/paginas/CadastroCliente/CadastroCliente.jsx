@@ -1,29 +1,19 @@
 import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import BotaoCustomizado from "../../componentes/BotaoCustomizado/BotaoCustomizado";
 import CampoCustomizado from "../../componentes/CampoCustomizado/CampoCustomizado";
 import Principal from "../../componentes/Principal/Principal";
+import { useAppContext } from "../../contexto/AppContext";
+import { adicionarCliente, atualizarCliente, buscarClientePeloId } from "../../servicos/clientes";
 import formatarComMascara, { MASCARA_CELULAR, MASCARA_CPF } from "../../utils/formatarComMascara";
 import validarCPF from "../../utils/validarCPF";
 import validarEmail from "../../utils/validarEmail";
-import { useNavigate, useParams } from "react-router-dom";
 
 function CadastroCliente() {
   const navigate = useNavigate();
   const params = useParams();
-
-  useEffect(() => {
-    if (params.clienteId) {
-      const clientesDoLocalStorage = JSON.parse(localStorage.getItem("clientes")) || [];
-      const clienteEncontrado = clientesDoLocalStorage.find(
-        (itemCliente) => itemCliente.id === params.clienteId
-      );
-
-      if (clienteEncontrado) {
-        setCliente(clienteEncontrado);
-      }
-    }
-  }, [params]);
+  const { usuarioLogado } = useAppContext();
 
   const [cliente, setCliente] = useState({
     nome: "",
@@ -31,8 +21,20 @@ function CadastroCliente() {
     dataNascimento: "",
     celular: "",
     email: "",
+    cidade: "",
     foto: null,
   });
+
+  useEffect(() => {
+    if (params.clienteId) {
+      const clienteEncontrado = buscarClientePeloId(params.clienteId);
+
+      if (clienteEncontrado) {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setCliente(clienteEncontrado);
+      }
+    }
+  }, [params]);
 
   const salvar = () => {
     if (!cliente.nome?.trim() || !cliente.cpf?.trim()) {
@@ -50,20 +52,11 @@ function CadastroCliente() {
       return;
     }
 
-    const clientesDoLocalStorage = JSON.parse(localStorage.getItem("clientes")) || [];
-
     if (cliente.id) {
-      const indexDoCliente = clientesDoLocalStorage.findIndex(
-        (itemCliente) => itemCliente.id === cliente.id
-      );
-
-      clientesDoLocalStorage[indexDoCliente] = cliente;
+      atualizarCliente(cliente);
     } else {
-      const novoCliente = { id: crypto.randomUUID(), ...cliente };
-      clientesDoLocalStorage.push(novoCliente);
+      adicionarCliente(cliente, usuarioLogado.id);
     }
-
-    localStorage.setItem("clientes", JSON.stringify(clientesDoLocalStorage));
 
     toast.success("Cliente salvo com sucesso!");
     navigate("/lista-clientes");
@@ -77,6 +70,7 @@ function CadastroCliente() {
         label="Nome"
         value={cliente.nome}
         onChange={(e) => setCliente({ ...cliente, nome: e.target.value })}
+        obrigatorio
       />
       <CampoCustomizado
         label="CPF"
@@ -89,7 +83,21 @@ function CadastroCliente() {
             toast.error("CPF inválido!");
           }
         }}
+        obrigatorio
       />
+
+      <CampoCustomizado
+        label="Cidade"
+        opcoes={[
+          { valor: "1", label: "Florianópolis" },
+          { valor: "2", label: "São José" },
+          { valor: "3", label: "Palhoça" },
+          { valor: "4", label: "Biguaçu" },
+        ]}
+        value={cliente.cidade}
+        onChange={(e) => setCliente({ ...cliente, cidade: e.target.value })}
+      />
+
       <CampoCustomizado
         type="date"
         label="Data Nascimento"
